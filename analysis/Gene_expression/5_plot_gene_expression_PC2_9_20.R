@@ -1,4 +1,4 @@
-# This code is going to do PCA analysis on gene expression
+# This code is going to plot the PCA values in left and right hemis
 
 # Created 28-July-2025
 # Created by M.-Y. WANG 
