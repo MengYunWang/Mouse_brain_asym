@@ -1,3 +1,5 @@
+# Mouse Brain Asymmetry
+
 Highlights
 •	Functional asymmetry is an important aspect of brain organization in vertebrates but the molecular and cellular contributions are barely understood
 •	We applied spatial transcriptomics with single molecule resolution to coronal sections from 31 adult mice, to examine the hippocampus and auditory cortex
@@ -6,5 +8,3 @@ Highlights
 
 Summary
 Although perfect symmetry is a mathematical ideal, many Bilateria exhibit left-right asymmetries of body, brain and behavior that are adaptive 1,2. In the human brain, various aspects of cognition are lateralized, including language 3 and handedness 4, which rely on left hemisphere dominance in most people. Brain hemispheric specialization can support parallel processing, neural efficiency, and action selection 5, while reduced structural or functional asymmetries are often found in neuropsychiatric disorders 6-9. Mice may be useful models for studying brain asymmetry because they show hemispheric differences of structure 10,11 and neurophysiology 12, but the extent to which molecular and cellular differences are involved remains unknown. We applied spatial transcriptomics with single molecule resolution to coronal sections from 31 adult mouse brains, to assess left-right differences of gene expression and cell types. Sections were chosen to capture the hippocampus and auditory cortex, as these two regions have shown the most prior evidence for functional asymmetry 12-14. In the hippocampus, Crhr1 (Corticotropin-Releasing Hormone Receptor 1) was more highly expressed in the pyramidal layers of CA1, CA3 and the dentage gyrus of the left hemisphere compared to the right. In the auditory cortex, three principal components capturing transcriptomic variation showed hemispheric differences. Overall cellular density and cell type proportions generally showed no significant hemispheric differences, with Car3 cortical excitatory neurons showing the most laterality. The transcriptional left-right differences that we found may relate to functional asymmetries for learning, memory and hearing.
-<img width="468" height="431" alt="image" src="https://github.com/user-attachments/assets/ef0c326e-6114-49df-8ab4-d5462bdcc950" />
-
