@@ -8,7 +8,7 @@ rm(list = ls())
 setwd("/data/workspaces/lag/workspaces/lg-func-asym/working_data/Mengyun")
 
 
-## ── 0.  ROI & colour map  ────────────────────────────────────────────────
+#################### Step 0.  ROI & colour map 
 roi <- "AC"          # or "AUD", etc.
 
 common_colors <- c(
@@ -51,7 +51,7 @@ cell_color_mapping <- if (roi == "AC") {
     "DG"        = "#0000FF")
 }
 
-## ── 1.  Data  ─────────────────────────────────────────────────────────────
+#################### Step 1.  Data  
 cell_counts <- data.frame(
   cell_type = c("Astro","Car3","Endo","L2-3 IT CTX","L4-5 IT CTX",
                 "L5 IT CTX","L5 PT CTX","L5-6 IT TPE-ENT","L5-6 NP CTX",
@@ -78,7 +78,7 @@ cell_counts$display <- ifelse(cell_counts$cell_type %in% names(display_name_map)
                               cell_counts$cell_type)
 
 
-# ----2.  Percentages & legend labels ----------------------------------------
+#################### Step2.  Percentages & legend labels
 cell_counts$prop <- cell_counts$count / sum(cell_counts$count)
 
 # Order slices (and legend) by descending percentage
@@ -89,11 +89,11 @@ cell_counts$cell_type <- factor(cell_counts$cell_type, levels = cell_counts$cell
 legend_lab <- sprintf("%6.2f%%  %s", 100 * cell_counts$prop, cell_counts$display)
 
 
-# ---- 3. Colors (use your palette; subset to the ones we actually need) -----
+#################### Step 3. Colors (subset to the ones we actually need)
 needed_colors <- cell_color_mapping[as.character(cell_counts$cell_type)]
 
 
-## ── 4.  Plot  ────────────────────────────────────────────────────────────
+#################### Step 4.  Plot  
 library(ggplot2)
 
 p <- ggplot(cell_counts, aes(x = "", y = count, fill = cell_type)) +
@@ -115,7 +115,7 @@ p <- ggplot(cell_counts, aes(x = "", y = count, fill = cell_type)) +
   ) +
   ggtitle("Cell-type composition")
 
-## ── 5.  Save as vector PDF  ──────────────────────────────────────────────
+#################### Step 5.  Save as vector PDF
 outfile <- paste0("output/2_Cell_type/acr_sample/batch1_2/AUD/Plot_F087_l", roi, "_cell_type_pie.pdf") # left hemi
 # outfile <- paste0("output/2_Cell_type/acr_sample/batch1_2/AUD/Plot_F087_r", roi, "_cell_type_pie.pdf") #right hemi
 
