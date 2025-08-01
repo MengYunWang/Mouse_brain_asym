@@ -1,3 +1,7 @@
+# This code is going to plot the crhr1 expression between two hemis
+
+# Created 28-07-2025
+# Created by M.-Y. WANG 
 
 # Remove all objects created before to prevent clashing
 rm(list = ls())
