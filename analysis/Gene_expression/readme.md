@@ -1,1 +1,6 @@
+For gene expression analysis:
 
+- Step1: run the 1.0 to curate the data
+- Step2: run the 1.1 to generate the gene by gene correlation matrix
+- Step3: run 2.0 and 2.1 to run the limma analysis on the gene expression
+- Step4: run 3.0 and 3.1 to run the pca analysis on the gene expression
