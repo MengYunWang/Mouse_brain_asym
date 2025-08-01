@@ -2,7 +2,7 @@
 
 ## created by M.-Y. Wang 17-Jul-2025
 
-# Remove all objects created before to prevent clusing
+# Remove all objects created before to prevent clashing
 rm(list = ls())
 
 # Set the working directory to the path where your files are located
@@ -11,7 +11,7 @@ rm(list = ls())
 setwd("/data/workspaces/lag/workspaces/lg-func-asym/working_data/Mengyun")
 
 
-################# Inherit the argument from the command line
+################# Step 0. Inherit the argument from the command line
 args <- commandArgs(trailingOnly=TRUE)
 file_name <- "harmony"  # This is the filenames "orig", "harmony","integrated_rpca"
 mouse_id <- "F687" # see the lookup variable
@@ -36,9 +36,8 @@ library(tidyr)
 #plan("multisession", workers = 10) #
 options(future.globals.maxSize = 20000 * 1024^2) # to define the max RAM for each worker
 
-#################################Step 1: Load and merge the data
+################################# Step 1: Load and update the data
 mouse_asym <- readRDS("intermedia_data/cell_type/F687_lhip_cell_type_harmony.rds")
-
 
 # function to process the coordinates
 process_coordi <- function(region) {
@@ -90,8 +89,8 @@ mouse_asym$predicted.celltype[
 
 mouse_asym$predicted.celltype <- factor(mouse_asym$predicted.celltype)
 
-#################################Step 4: plot the image
-# group cells either by their cell type identity, or their niche identity.
+################################# Step 2: plot the image
+# group cells either by their cell type identity or their niche identity.
 cell_color_mapping <- c(
   "Astro"       = "#E41A1C",  # red
   "Endo"        = "#377EB8",  # blue
