@@ -1,3 +1,7 @@
+# This code is going to do PCA analysis on gene expression
+
+# Created 28-July-2025
+# Created by M.-Y. WANG 
 
 # Remove all objects created before to prevent clashing
 rm(list = ls())
