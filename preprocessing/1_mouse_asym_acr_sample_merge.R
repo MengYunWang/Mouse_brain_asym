@@ -1,4 +1,4 @@
-# This script is to do harmonization across the 12 batches
+# This script is to do merge the batches into one and separate the samples 
 
 # Created by M.-Y. WANG
 # 31-Aug-2024; updated 17-Mar-2025
@@ -78,3 +78,4 @@ mouse_asym <- mouse_asym %>%
 
 # save the data
 saveRDS(mouse_asym,file="intermedia_data/mouse_asym_acr_sample_orig.rds")
+
