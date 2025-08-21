@@ -1,4 +1,4 @@
-# Mouse Brain Asymmetry
+# Perfect imperfections: seeking molecular and cellular asymmetries in the mouse brain 
 
 ## Highlights
 
