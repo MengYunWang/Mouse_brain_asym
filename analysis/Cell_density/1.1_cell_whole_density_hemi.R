@@ -62,7 +62,7 @@ data2save$sample_id <- rep(c("M669", "M670", "M671", "M672", "M673", "M674", "M6
                       "M678", "M234", "M253", "M071", "M083", "M650", "M638", "M076", "M236", 
                       "F679", "F680", "F681", "F682", "F683", "F685", "F686", "F687", "F688", 
                       "F073", "F078", "F087", "F090"), 2)
-data2save$id <- rep(1:31, 2)
+data2save$id <- factor(rep(1:31, 2))
 data2save <- data2save[, c('id', 'sample_id','sex','hemi',setdiff(names(data2save), c('id','sample_id','sex','hemi')))]
 
 write.xlsx(data2save, file = "output/3_Cell_density/Overall_cell/batch1_2/Hemi_data2analysis_density.xlsx", 
