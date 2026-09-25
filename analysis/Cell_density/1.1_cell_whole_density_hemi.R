@@ -1,6 +1,6 @@
-# This code is going to do Permutation analysis on the hemi effect on cell density
+# Linear-model analysis of hemisphere effects on overall cell density in AUD and HIP.
 
-# Created 23-Sep-2024; updated 15-March-2025
+# Created 23-Sep-2024; updated 15-March-2025; updated 25-Sep-2026
 # Created by M.-Y. WANG 
 
 # Remove all objects created before to prevent clushing
@@ -9,7 +9,8 @@ rm(list = ls())
 # Set the working directory to the path where your files are located
 # setwd("/Users/joeywang/Library/CloudStorage/OneDrive-RadboudUniversiteit/Research_Project/Mouse_brain") # change it to the file directory
 # setwd("/Users/wang/Library/CloudStorage/OneDrive-RadboudUniversiteit/Research_Project/Mouse_brain/")
-setwd("/data/workspaces/lag/workspaces/lg-func-asym/working_data/Mengyun")
+# Folder containing the two uploaded source workbooks; change this if running elsewhere.
+setwd("C:/Users/menwan2/Documents/Codex/2026-09-24/creat-a-folder-for-this-project-2/outputs/manuscript-review/data")
 
 library(readxl)
 library(openxlsx)
@@ -20,18 +21,12 @@ library(purrr)
 library(parallel)
 
 ################################################### Preprocessing
-# read data
+# Read the two main regions only; subregions are outside this analysis.
 df_roi_AUD <- read_excel("Spatial_transcriptomics_batch1_batch2_Xenium_extractions_AUD.xlsx", sheet = "cell_density")
 df_roi_HIP <- read_excel("Spatial_transcriptomics_batch1_batch2_Xenium_extractions_HIP.xlsx", sheet = "cell_density")
-df_roi_CA1 <- read_excel("Spatial_transcriptomics_batch1_batch2_Xenium_extractions_CA1.xlsx", sheet = "cell_density")
-df_roi_CA3 <- read_excel("Spatial_transcriptomics_batch1_batch2_Xenium_extractions_CA3.xlsx", sheet = "cell_density")
-df_roi_DG <- read_excel("Spatial_transcriptomics_batch1_batch2_Xenium_extractions_DG.xlsx", sheet = "cell_density")
 
 df_data_AUD <- df_roi_AUD[, (which(df_roi_AUD[2, ] == "Density"))]
 df_data_HIP <- df_roi_HIP[, (which(df_roi_HIP[2, ] == "Density"))]
-df_data_CA1 <- df_roi_CA1[, (which(df_roi_CA1[2, ] == "Density"))]
-df_data_CA3 <- df_roi_CA3[, (which(df_roi_CA3[2, ] == "Density"))]
-df_data_DG <- df_roi_DG[, (which(df_roi_DG[2, ] == "Density"))]
 
 df_data_AUD <- df_data_AUD[c(-1:-2),]
 colnames(df_data_AUD) <- c("AUD", "AUD")
@@ -40,17 +35,7 @@ df_data_HIP <- df_data_HIP[c(-1:-2),]
 colnames(df_data_HIP) <- c("HIP","HIP")
 df_data_HIP <- rbind(df_data_HIP[,1], df_data_HIP[,2])
 
-df_data_CA1 <- df_data_CA1[c(-1:-2),]
-colnames(df_data_CA1) <- c("CA1","CA1")
-df_data_CA1 <- rbind(df_data_CA1[,1], df_data_CA1[,2])
-df_data_CA3 <- df_data_CA3[c(-1:-2),]
-colnames(df_data_CA3) <- c("CA3","CA3")
-df_data_CA3 <- rbind(df_data_CA3[,1], df_data_CA3[,2])
-df_data_DG <- df_data_DG[c(-1:-2),]
-colnames(df_data_DG) <- c("DG","DG")
-df_data_DG <- rbind(df_data_DG[,1], df_data_DG[,2])
-
-data2analysis <- cbind(df_data_AUD, df_data_HIP, df_data_CA1, df_data_CA3, df_data_DG)
+data2analysis <- cbind(df_data_AUD, df_data_HIP)
 data2analysis <- as.data.frame(data2analysis)
 
 
@@ -62,19 +47,19 @@ data2save$sample_id <- rep(c("M669", "M670", "M671", "M672", "M673", "M674", "M6
                       "M678", "M234", "M253", "M071", "M083", "M650", "M638", "M076", "M236", 
                       "F679", "F680", "F681", "F682", "F683", "F685", "F686", "F687", "F688", 
                       "F073", "F078", "F087", "F090"), 2)
+# Mouse ID must be categorical: this gives each mouse its own intercept in lm().
+# The same ID labels the left and right measurements from that mouse.
 data2save$id <- factor(rep(1:31, 2))
 data2save <- data2save[, c('id', 'sample_id','sex','hemi',setdiff(names(data2save), c('id','sample_id','sex','hemi')))]
 
-write.xlsx(data2save, file = "output/3_Cell_density/Overall_cell/batch1_2/Hemi_data2analysis_density.xlsx", 
+# Use a distinct filename for the two-region analysis input.
+write.xlsx(data2save, file = "output/3_Cell_density/Overall_cell/batch1_2/Hemi_data2analysis_density_HIP_AUD.xlsx", 
            sheetName="overall_cell_density")
 
 ############################################################## Analysis
 
 fit_AUD <- lm(AUD ~ hemi + id, data = data2save, na.action = na.omit)
 fit_HIP <- lm(HIP ~ hemi + id, data = data2save, na.action = na.omit)
-fit_CA1 <- lm(CA1 ~ hemi + id, data = data2save, na.action = na.omit)
-fit_CA3 <- lm(CA3 ~ hemi + id, data = data2save, na.action = na.omit)
-fit_DG <- lm(DG ~ hemi + id, data = data2save, na.action = na.omit)
 
 # Define a function to extract stats from an lm() fit
 extract_lm_stats <- function(fit) {
@@ -108,27 +93,24 @@ extract_lm_stats <- function(fit) {
 # Extract stats for each fit
 stats_AUD <- extract_lm_stats(fit_AUD)
 stats_HIP <- extract_lm_stats(fit_HIP)
-stats_CA1 <- extract_lm_stats(fit_CA1)
-stats_CA3 <- extract_lm_stats(fit_CA3)
-stats_DG <- extract_lm_stats(fit_DG)
 
-# Adjust p-values for multiple testing
-raw_pvals <- c(stats_AUD$p, stats_HIP$p, stats_CA1$p, stats_CA3$p, stats_DG$p)
+# BH/FDR correction across AUD and HIP only.
+raw_pvals <- c(stats_AUD$p, stats_HIP$p)
 adj_pvals <- p.adjust(raw_pvals, method = "fdr")
 
 # Combine into a single results data frame
 results_df <- data.frame(
-  region   = c("AUD", "HIP", "CA1", "CA3", "DG"),
-  t        = c(stats_AUD$t,    stats_HIP$t,  stats_CA1$t,  stats_CA3$t,  stats_DG$t),
-  df       = c(stats_AUD$df,   stats_HIP$df, stats_CA1$df, stats_CA3$df, stats_DG$df),
-  P.Value  = c(stats_AUD$p,    stats_HIP$p, stats_CA1$p, stats_CA3$p, stats_DG$p),
+  region   = c("AUD", "HIP"),
+  t        = c(stats_AUD$t, stats_HIP$t),
+  df       = c(stats_AUD$df, stats_HIP$df),
+  P.Value  = c(stats_AUD$p, stats_HIP$p),
   adjust.P = adj_pvals,
-  CI.Low   = c(stats_AUD$ci_low,  stats_HIP$ci_low, stats_CA1$ci_low, stats_CA3$ci_low, stats_DG$ci_low),
-  CI.High  = c(stats_AUD$ci_high, stats_HIP$ci_high, stats_CA1$ci_high, stats_CA3$ci_high, stats_DG$ci_high)
+  CI.Low   = c(stats_AUD$ci_low, stats_HIP$ci_low),
+  CI.High  = c(stats_AUD$ci_high, stats_HIP$ci_high)
 )
 
 # Write the table to an Excel file
-write.xlsx(results_df, "output/3_Cell_density/Overall_cell/batch1_2/Hemi_results_cell_density.xlsx", sheetName = "overall_cell_density")
+write.xlsx(results_df, "output/3_Cell_density/Overall_cell/batch1_2/Hemi_results_cell_density_HIP_AUD.xlsx", sheetName = "overall_cell_density")
 
 
 
@@ -265,6 +247,4 @@ write.xlsx(results_df, "output/3_Cell_density/Overall_cell/batch1_2/Hemi_results
 # 
 # 
 # write.xlsx(test_update(paired_hemi), "output/3_Cell_density/Overall_cell/batch1_2/cell_density_paired_test_hemi_permu.xlsx", sheetName = "cell_density")
-
-
 
