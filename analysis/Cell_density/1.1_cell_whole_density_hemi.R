@@ -9,7 +9,6 @@ rm(list = ls())
 # Set the working directory to the path where your files are located
 # setwd("/Users/joeywang/Library/CloudStorage/OneDrive-RadboudUniversiteit/Research_Project/Mouse_brain") # change it to the file directory
 # setwd("/Users/wang/Library/CloudStorage/OneDrive-RadboudUniversiteit/Research_Project/Mouse_brain/")
-# Folder containing the two uploaded source workbooks; change this if running elsewhere.
 setwd("C:/Users/menwan2/Documents/Codex/2026-09-24/creat-a-folder-for-this-project-2/outputs/manuscript-review/data")
 
 library(readxl)
@@ -53,7 +52,7 @@ data2save$id <- factor(rep(1:31, 2))
 data2save <- data2save[, c('id', 'sample_id','sex','hemi',setdiff(names(data2save), c('id','sample_id','sex','hemi')))]
 
 # Use a distinct filename for the two-region analysis input.
-write.xlsx(data2save, file = "output/3_Cell_density/Overall_cell/batch1_2/Hemi_data2analysis_density_HIP_AUD.xlsx", 
+write.xlsx(data2save, file = "output/3_Cell_density/Overall_cell/batch1_2/Hemi_data2analysis_density.xlsx", 
            sheetName="overall_cell_density")
 
 ############################################################## Analysis
@@ -110,7 +109,7 @@ results_df <- data.frame(
 )
 
 # Write the table to an Excel file
-write.xlsx(results_df, "output/3_Cell_density/Overall_cell/batch1_2/Hemi_results_cell_density_HIP_AUD.xlsx", sheetName = "overall_cell_density")
+write.xlsx(results_df, "output/3_Cell_density/Overall_cell/batch1_2/Hemi_results_cell_density.xlsx", sheetName = "overall_cell_density")
 
 
 
