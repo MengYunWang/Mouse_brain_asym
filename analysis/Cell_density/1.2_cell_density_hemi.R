@@ -9,7 +9,6 @@ rm(list = ls())
 # Set the working directory to the path where your files are located
 # setwd("/Users/joeywang/Library/CloudStorage/OneDrive-RadboudUniversiteit/Research_Project/Mouse_brain") # change it to the file directory
 # setwd("/Users/wang/Library/CloudStorage/OneDrive-RadboudUniversiteit/Research_Project/Mouse_brain/")
-setwd("C:/Users/menwan2/Documents/Codex/2026-09-24/creat-a-folder-for-this-project-2/outputs/manuscript-review/data")
 
 library(readxl)
 library(openxlsx)
